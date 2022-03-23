@@ -34,4 +34,4 @@ steps:
     repository: 'campus-service/test'
     command: 'buildAndPush'
     Dockerfile: '**/Dockerfile'
-    tags: '$(Build.SourceBranch)'
+    tags: '$(Build.SourceBranchName)'
