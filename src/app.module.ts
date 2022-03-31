@@ -1,10 +1,15 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { ConfigModule } from '@nestjs/config';
+import { VALIDATION_SCHEMA } from './config/config-validator.schema';
+import { CslModule } from './learning-material/csl/csl.module';
 
 @Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      validationSchema: VALIDATION_SCHEMA,
+    }),
+    CslModule,
+  ],
 })
 export class AppModule {}
