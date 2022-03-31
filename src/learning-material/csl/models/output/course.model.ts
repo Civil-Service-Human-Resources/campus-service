@@ -1,7 +1,6 @@
-import { Audience } from "./audience.model";
-import { LearningProvider } from "./learning-provider.model";
-import { Module } from "./module.model";
-import { Owner } from "./owner.model";
+import { LearningProvider } from './learning-provider.model';
+import { Module } from './module.model';
+import { Owner } from './owner.model';
 
 export interface Course {
   id: string;
@@ -11,7 +10,7 @@ export interface Course {
   learningOutcomes: string;
   modules: Module[];
   learningProvider: LearningProvider;
-  audiences: Audience[];
+  audiences: [];
   preparation: string;
   owner: Owner;
   visibility: string;
