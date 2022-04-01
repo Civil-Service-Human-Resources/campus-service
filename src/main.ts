@@ -1,7 +1,7 @@
+import * as appInsights from 'applicationinsights';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 
-import * as appInsights from 'applicationinsights';
 import { ConfigService } from '@nestjs/config';
 import { AppInsightsLogger } from './util/logging/appi-logger';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
