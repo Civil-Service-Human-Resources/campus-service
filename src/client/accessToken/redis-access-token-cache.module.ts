@@ -10,8 +10,7 @@ import { RedisAccessTokenService } from './redis-access-token-cache.service';
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => ({
         store: redisStore,
-        host: configService.get('REDIS_ACCESS_TOKEN_HOST'),
-        port: configService.get('REDIS_ACCESS_TOKEN_PORT'),
+        url: configService.get('REDIS_ACCESS_TOKEN_URL'),
       }),
     }),
   ],
