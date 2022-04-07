@@ -1,10 +1,7 @@
 import { ConsoleLogger, Injectable, Scope } from '@nestjs/common';
 import { TelemetryClient } from 'applicationinsights';
-import {
-  ExceptionTelemetry,
-  SeverityLevel,
-  TraceTelemetry,
-} from 'applicationinsights/out/Declarations/Contracts';
+import { SeverityLevel, ExceptionTelemetry, TraceTelemetry } from 'applicationinsights/out/Declarations/Contracts';
+
 
 @Injectable({ scope: Scope.TRANSIENT })
 export class AppInsightsLogger extends ConsoleLogger {
