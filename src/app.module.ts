@@ -1,10 +1,24 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { ConfigModule } from '@nestjs/config';
+import { TerminusModule } from '@nestjs/terminus';
+import { ThrottlerModule } from '@nestjs/throttler';
+import { VALIDATION_SCHEMA } from './config/config-validator.schema';
+import { CslModule } from './learning-material/csl/csl.module';
+import { HealthController } from './health/health.controller';
 
 @Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      validationSchema: VALIDATION_SCHEMA,
+    }),
+    ThrottlerModule.forRoot({
+      ttl: 60,
+      limit: 100,
+    }),
+    CslModule,
+    TerminusModule,
+  ],
+  controllers: [HealthController],
 })
 export class AppModule {}
