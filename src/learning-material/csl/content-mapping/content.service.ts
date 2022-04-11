@@ -1,16 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { parse } from 'csv-parse/.';
 import { BlobStorageService } from 'src/client/blob-storage/blob-storage.service';
+import { CacheClient } from 'src/client/cache/cache-client.interface';
 import { CSLConfig } from '../csl.config';
 import { ContentRow } from '../models/contentMapping.model';
-import { CsvCacheService } from './csvCache.service';
 
 @Injectable()
 export class CSLContentService {
   constructor(
     private readonly blobService: BlobStorageService,
     private readonly cslConfig: CSLConfig,
-    private readonly cache: CsvCacheService,
+    private readonly cache: CacheClient<ContentRow[]>,
   ) {}
 
   private loadContentCsv = async () => {
