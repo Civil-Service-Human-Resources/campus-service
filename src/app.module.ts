@@ -5,6 +5,7 @@ import { ThrottlerModule } from '@nestjs/throttler';
 import { VALIDATION_SCHEMA } from './config/config-validator.schema';
 import { CslModule } from './learning-material/csl/csl.module';
 import { HealthController } from './health/health.controller';
+import { StrandModule } from './strand/strand.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { HealthController } from './health/health.controller';
     }),
     CslModule,
     TerminusModule,
+    StrandModule,
   ],
   controllers: [HealthController],
 })

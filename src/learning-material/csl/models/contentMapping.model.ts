@@ -1,5 +1,5 @@
 export class ContentRow {
   readonly courseID: string;
-  readonly strandID: string;
+  readonly strandID: number;
   readonly category: string;
 }

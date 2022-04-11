@@ -17,6 +17,7 @@ const mockCsv = `courseID,strandID,category
   008,5,security
   009,5,security`;
 
+//*TS
 class BlobServiceMock {
   getFile(fileName: string) {
     return mockCsv;
@@ -68,7 +69,7 @@ describe('CSLContentService', () => {
 
   it('should get a course ID for a strand / category combination', async () => {
     const resp = await contentService.getCoursesForStrandAndCategory(
-      '1',
+      1,
       'security',
     );
     expect(resp).toEqual(['001']);
@@ -76,7 +77,7 @@ describe('CSLContentService', () => {
 
   it('should get multiple course IDs for a strand / category combination', async () => {
     const resp = await contentService.getCoursesForStrandAndCategory(
-      '5',
+      5,
       'security',
     );
     expect(resp.length).toEqual(4);
@@ -84,9 +85,16 @@ describe('CSLContentService', () => {
 
   it('should get 0 course IDs for an invalid strand / category combination', async () => {
     const resp = await contentService.getCoursesForStrandAndCategory(
-      '5',
+      5,
       'analysis',
     );
     expect(resp.length).toEqual(0);
+  });
+
+  it('should return relevant categories based on the strand ID provided', async () => {
+    const resp = await contentService.getRelevantCategoriesForStrand(1);
+    expect(resp.size).toEqual(2);
+    expect(resp[0]).toEqual('security');
+    expect(resp[0]).toEqual('analysis');
   });
 });

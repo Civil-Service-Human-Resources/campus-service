@@ -1,8 +1,7 @@
 import { CacheModule, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-
+import { CacheClient } from '../../client/cache/cache-client.interface';
 import * as redisStore from 'cache-manager-redis-store';
-import { CacheClient } from '../../../client/cache/cache-client.interface';
 
 @Module({
   imports: [
@@ -19,4 +18,4 @@ import { CacheClient } from '../../../client/cache/cache-client.interface';
   providers: [CacheClient],
   exports: [CacheClient],
 })
-export class CslCacheModule {}
+export class StrandCacheModule {}

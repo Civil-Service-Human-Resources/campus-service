@@ -32,6 +32,6 @@ import { RedisAccessTokenModule } from '../../client/cache/accessToken/redis-acc
     CslHealth,
   ],
   controllers: [CslController],
-  exports: [CslHealth],
+  exports: [CslHealth, CSLContentService],
 })
 export class CslModule {}
