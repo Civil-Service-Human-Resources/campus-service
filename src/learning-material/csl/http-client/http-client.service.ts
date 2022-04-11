@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 import * as FormData from 'form-data';
-import { AccessToken } from 'src/client/accessToken/access-token.model';
-import { RedisAccessTokenService } from 'src/client/accessToken/redis-access-token-cache.service';
+import { AccessToken } from 'src/client/cache/accessToken/access-token.model';
+import { RedisAccessTokenService } from 'src/client/cache/accessToken/redis-access-token-cache.service';
 import { AppInsightsLogger } from 'src/util/logging/appi-logger';
 import { CSLConfig } from '../csl.config';
 

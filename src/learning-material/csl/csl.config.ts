@@ -9,6 +9,8 @@ export class CSLConfig {
   readonly accessTokenId: string;
   readonly baseUrl: string;
   readonly cacheTtl: number;
+  readonly csvFileName: string;
+  readonly contentCacheUrl: string;
   constructor(private configService: ConfigService) {
     this.clientId = this.configService.get<string>(
       'CSL_LEARNING_CATALOGUE_CLIENT_ID',
@@ -27,6 +29,12 @@ export class CSLConfig {
     );
     this.cacheTtl = this.configService.get<number>(
       'CSL_LEARNING_CATALOGUE_CACHE_TTL',
+    );
+    this.csvFileName = this.configService.get<string>(
+      'CSL_CONTENT_CSV_FILENAME',
+    );
+    this.contentCacheUrl = this.configService.get<string>(
+      'CSL_CONTENT_CACHE_URL',
     );
   }
 }

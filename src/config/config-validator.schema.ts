@@ -8,6 +8,8 @@ export const VALIDATION_SCHEMA = Joi.object({
   CSL_LEARNING_CATALOGUE_IDENTITY_URL: Joi.string().uri().required(),
   CSL_LEARNING_CATALOGUE_BASE_URL: Joi.string().uri().required(),
   CSL_LEARNING_CATALOGUE_ACCESS_TOKEN_ID: Joi.string().default('csl-token'),
+  BLOB_CONNECTION_STRING: Joi.string().required(),
+  BLOB_CONTAINER_NAME: Joi.string().required(),
   REDIS_ACCESS_TOKEN_URL: Joi.string().required(),
   PORT: Joi.number().port().default(3000),
   NODE_ENV: Joi.string().allow('development', 'production').required(),
