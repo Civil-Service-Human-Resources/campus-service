@@ -1,5 +1,5 @@
 export class ContentRow {
-  readonly CSLId: string;
-  readonly strandId: string;
+  readonly courseID: string;
+  readonly strandID: string;
   readonly category: string;
 }

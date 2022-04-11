@@ -11,6 +11,6 @@ export class BlobStorageConnectionFactory {
     const blobClientService =
       BlobServiceClient.fromConnectionString(connString);
     const containerClient = blobClientService.getContainerClient(containerName);
-    return containerClient.getBlobClient(fileName);
+    return containerClient.getBlockBlobClient(fileName);
   }
 }

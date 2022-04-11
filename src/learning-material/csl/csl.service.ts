@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
+import { CacheClient } from '../../client/cache/cache-client.interface';
 import { LearningMaterial } from '../models/LearningMaterial';
 import { ClientService } from './client/client.service';
 import { Course } from './models/output/course.model';
-import { CacheClient } from 'src/client/cache/cache-client.interface';
 
 @Injectable()
 export class CslService {
@@ -13,11 +13,11 @@ export class CslService {
 
   async getCourse(courseId: string) {
     const cacheKey = `csl:content:${courseId}`;
-    const cachedCourse = this.cache.getObject(cacheKey);
+    const cachedCourse = await this.cache.getObject(cacheKey);
     if (cachedCourse == null) {
       const course = await this.clientService.getCourseWithId(courseId);
       const convertedCourse = await this.mapCourseToLearningMaterial(course);
-      this.cache.setObject(cacheKey, convertedCourse);
+      await this.cache.setObject(cacheKey, convertedCourse);
       return convertedCourse;
     } else {
       return cachedCourse;

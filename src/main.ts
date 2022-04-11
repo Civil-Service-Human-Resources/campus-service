@@ -5,12 +5,15 @@ import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
 import { AppInsightsLogger } from './util/logging/appi-logger';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { CSLContentService } from './learning-material/csl/content-mapping/content.service';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   const confService = app.get(ConfigService);
   const PORT = confService.get('PORT');
+
+  // Logging
   const logger = await app.resolve(AppInsightsLogger);
   if (confService.get('NODE_ENV') != 'development') {
     appInsights
@@ -24,6 +27,7 @@ async function bootstrap() {
   logger.setClient(appInsights.defaultClient);
   app.useLogger(logger);
 
+  // Swagger
   const config = new DocumentBuilder()
     .setTitle('Campus Service')
     .setDescription('Backend service for the Campus website')

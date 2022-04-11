@@ -1,7 +1,8 @@
 import { CacheModule, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+
 import * as redisStore from 'cache-manager-redis-store';
-import { RedisAccessTokenService } from './redis-access-token-cache.service';
+import { CacheClient } from '../../../client/cache/cache-client.interface';
 
 @Module({
   imports: [
@@ -14,7 +15,7 @@ import { RedisAccessTokenService } from './redis-access-token-cache.service';
       }),
     }),
   ],
-  providers: [RedisAccessTokenService],
-  exports: [RedisAccessTokenService],
+  providers: [CacheClient],
+  exports: [CacheClient],
 })
-export class RedisAccessTokenModule {}
+export class CslCacheModule {}
