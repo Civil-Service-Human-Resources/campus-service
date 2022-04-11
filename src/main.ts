@@ -5,7 +5,6 @@ import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
 import { AppInsightsLogger } from './util/logging/appi-logger';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
-import { CSLContentService } from './learning-material/csl/content-mapping/content.service';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
