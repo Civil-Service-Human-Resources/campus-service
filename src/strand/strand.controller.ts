@@ -29,7 +29,7 @@ export class StrandController {
         await this.cslContentService.getRelevantCategoriesForStrand(strandId);
       const strand: Strand = {
         strandId: strandId,
-        categoriesToDisplay: Array.from(categories),
+        categoriesToDisplay: Array.from(categories).sort(),
       };
       await this.cache.setObject(cacheKey, strand);
       return strand;
