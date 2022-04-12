@@ -92,9 +92,11 @@ describe('CSLContentService', () => {
   });
 
   it('should return relevant categories based on the strand ID provided', async () => {
-    const resp = await contentService.getRelevantCategoriesForStrand(1);
-    expect(resp.size).toEqual(2);
-    expect(resp[0]).toEqual('security');
-    expect(resp[0]).toEqual('analysis');
+    const resp = Array.from(
+      await contentService.getRelevantCategoriesForStrand(1),
+    );
+    expect(resp.length).toEqual(2);
+    expect(resp.indexOf('security')).toBeGreaterThan(-1);
+    expect(resp.indexOf('analysis')).toBeGreaterThan(-1);
   });
 });
