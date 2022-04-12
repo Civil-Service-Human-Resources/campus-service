@@ -3,11 +3,11 @@ import { Cache } from 'cache-manager';
 
 @Injectable()
 export class CacheClient<T> {
-  constructor(@Inject(CACHE_MANAGER) readonly tokenStore: Cache) {}
+  constructor(@Inject(CACHE_MANAGER) readonly store: Cache) {}
 
   async getObject(key: string): Promise<T> {
     try {
-      const value = await this.tokenStore.get<string>(key);
+      const value = await this.store.get<string>(key);
       return JSON.parse(value) as T;
     } catch (e) {
       console.log(`Couldn't get value from cache: ${e}`);
@@ -15,6 +15,6 @@ export class CacheClient<T> {
   }
   async setObject(key: string, value: T) {
     const stringedValue = await JSON.stringify(value);
-    await this.tokenStore.set(key, stringedValue);
+    await this.store.set(key, stringedValue);
   }
 }

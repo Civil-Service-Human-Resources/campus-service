@@ -11,6 +11,8 @@ async function bootstrap() {
 
   const confService = app.get(ConfigService);
   const PORT = confService.get('PORT');
+
+  // Logging
   const logger = await app.resolve(AppInsightsLogger);
   if (confService.get('NODE_ENV') != 'development') {
     appInsights
@@ -24,6 +26,7 @@ async function bootstrap() {
   logger.setClient(appInsights.defaultClient);
   app.useLogger(logger);
 
+  // Swagger
   const config = new DocumentBuilder()
     .setTitle('Campus Service')
     .setDescription('Backend service for the Campus website')
