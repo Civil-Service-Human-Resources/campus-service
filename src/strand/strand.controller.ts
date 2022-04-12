@@ -29,7 +29,9 @@ export class StrandController {
         await this.cslContentService.getRelevantCategoriesForStrand(strandId);
       const strand: Strand = {
         strandId: strandId,
-        categoriesToDisplay: Array.from(categories).sort(),
+        categoriesToDisplay: Array.from(categories).sort((a, b) => {
+          return a.localeCompare(b, 'en', { sensitivity: 'base' });
+        }),
       };
       await this.cache.setObject(cacheKey, strand);
       return strand;
