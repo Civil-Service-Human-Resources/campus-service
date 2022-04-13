@@ -1,4 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 import * as FormData from 'form-data';
 import { AccessToken } from '../../../client/cache/accessToken/access-token.model';
@@ -9,40 +13,49 @@ import { CSLConfig } from '../csl.config';
 @Injectable()
 export class HttpClientService {
   private readonly logger = new AppInsightsLogger(HttpClientService.name);
-  private readonly httpClient: AxiosInstance = axios.create();
+  private readonly httpClient: AxiosInstance = axios.create({
+    baseURL: this.config.baseUrl,
+  });
   constructor(
     private readonly config: CSLConfig,
     private readonly tokenStore: RedisAccessTokenService,
   ) {
     this.httpClient.interceptors.request.use(this.requestInterceptor);
-    this.httpClient.defaults.baseURL = this.config.baseUrl;
   }
 
   makeRequest = async <T>(request: AxiosRequestConfig) => {
     try {
       return await this.httpClient.request<T>(request);
     } catch (error) {
-      const fullUrl = `${request.baseURL}${request.url}`;
+      // request.baseURL defaults to undefined here for some reason..
+      const fullUrl = `${this.config.baseUrl}${request.url}`;
       if (axios.isAxiosError(error)) {
         if (error.response) {
           const status = error.response.status;
+          error.response.config.baseURL;
           this.logger.error(
-            `${status} status code encountered when making request with URL: ${fullUrl}, method: ${request.method}. error: ${error}`,
+            `HTTP error code received when making ${request.method} request to ${fullUrl}. ${error}`,
           );
+          if (400 <= status && status <= 499) {
+            return error.response;
+          } else {
+            throw new InternalServerErrorException(error);
+          }
         } else if (error.request) {
           this.logger.error(
-            `No response received when making request with URL: ${fullUrl}, method: ${request.method}. error: ${error}`,
+            `No response received when making ${request.method} request to ${fullUrl}. ${error}`,
           );
         } else {
           this.logger.error(
-            `Axios error encountered when making request with URL: ${fullUrl}, method: ${request.method}. error: ${error}`,
+            `Axios error encountered when making ${request.method} request to ${fullUrl}. ${error}`,
           );
         }
       } else {
         this.logger.error(
-          `Error encountered when making request with URL: ${fullUrl}, method: ${request.method}. error: ${error}`,
+          `Error encountered when making ${request.method} request to ${fullUrl}. ${error}`,
         );
       }
+      throw error;
     }
   };
 
@@ -65,7 +78,6 @@ export class HttpClientService {
     this.logger.debug('Fetching new access token');
     const formData = new FormData();
     formData.append('grant_type', 'client_credentials');
-    console.log('Sending access token request');
     try {
       this.logger.debug('Attempting access token request');
       const tokenRes = await axios.request({

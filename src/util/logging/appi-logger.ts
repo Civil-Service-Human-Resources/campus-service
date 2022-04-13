@@ -31,7 +31,7 @@ export class AppInsightsLogger extends ConsoleLogger {
         properties: [context, super.context, trace],
       } as ExceptionTelemetry);
       this.client.trackTrace({
-        message,
+        message: message,
         severity: SeverityLevel.Error,
       } as TraceTelemetry);
     }
@@ -41,7 +41,7 @@ export class AppInsightsLogger extends ConsoleLogger {
   info = (message: string) => {
     if (this.enabled) {
       this.client.trackTrace({
-        message,
+        message: message,
         severity: SeverityLevel.Information,
         properties: [super.context],
       } as TraceTelemetry);
@@ -52,7 +52,7 @@ export class AppInsightsLogger extends ConsoleLogger {
   warn = (message: string) => {
     if (this.enabled) {
       this.client.trackTrace({
-        message,
+        message: message,
         severity: SeverityLevel.Warning,
         properties: [super.context],
       } as TraceTelemetry);
@@ -63,7 +63,7 @@ export class AppInsightsLogger extends ConsoleLogger {
   debug(message: any, context?: string): any {
     if (this.enabled) {
       this.client.trackTrace({
-        message,
+        message: message,
         severity: SeverityLevel.Information,
         properties: [context, super.context],
       } as TraceTelemetry);
