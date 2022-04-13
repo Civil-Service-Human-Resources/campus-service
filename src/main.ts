@@ -19,7 +19,11 @@ async function bootstrap() {
       .setup()
       .setAutoCollectConsole(true, true)
       .setAutoDependencyCorrelation(true)
-      .start();
+      .setAutoCollectRequests(true);
+    appInsights.defaultClient.context.tags[
+      appInsights.defaultClient.context.keys.cloudRole
+    ] = confService.get('APPLICATIONINSIGHTS_ROLE_NAME');
+    appInsights.start();
     logger.setAppInsightsEnabled(true);
   }
 
