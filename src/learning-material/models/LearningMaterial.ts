@@ -14,6 +14,12 @@ export class LearningMaterial {
   description: string;
 
   @ApiProperty()
+  duration: number;
+
+  @ApiProperty()
+  type: string;
+
+  @ApiProperty()
   shortDescription?: string;
 
   @ApiProperty()
