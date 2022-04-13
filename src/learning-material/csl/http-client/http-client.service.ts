@@ -78,7 +78,6 @@ export class HttpClientService {
     this.logger.debug('Fetching new access token');
     const formData = new FormData();
     formData.append('grant_type', 'client_credentials');
-    console.log('Sending access token request');
     try {
       this.logger.debug('Attempting access token request');
       const tokenRes = await axios.request({
