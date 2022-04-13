@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { first } from 'rxjs';
 import { LearningMaterial } from '../models/LearningMaterial';
 import { CSLConfig } from './csl.config';
 import { Course } from './models/output/course.model';
@@ -35,7 +36,13 @@ export class CSLCourseMapper {
     if (moduleTypes.size > 1) {
       return 'Blended';
     } else {
-      return [...moduleTypes][0];
+      const firstElem = [...moduleTypes][0];
+      if (firstElem) {
+        const formatted = firstElem.replace(/-/g, ' ');
+        return formatted[0].toUpperCase() + formatted.slice(1);
+      } else {
+        return '';
+      }
     }
   };
 }

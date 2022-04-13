@@ -109,4 +109,13 @@ describe('CSLMapper', () => {
     );
     expect(resp.type).toEqual('Video');
   });
+
+  it('Should correctly format the course type as an individual type', async () => {
+    const sampleModules: Module[] = [loadModule(0, 'face-to-face')];
+    sampleCourse.modules = sampleModules;
+    const resp = await mapperUnderTest.mapCourseToLearningMaterial(
+      sampleCourse,
+    );
+    expect(resp.type).toEqual('Face to face');
+  });
 });
