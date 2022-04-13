@@ -13,6 +13,7 @@ import { CSLContentService } from './content-mapping/content.service';
 import { AppInsightsLoggerModule } from '../../util/logging/appi-logger.module';
 import { BlobStorageModule } from '../../client/blob-storage/blob-storage.module';
 import { RedisAccessTokenModule } from '../../client/cache/accessToken/redis-access-token-cache.module';
+import { CSLCourseMapper } from './csl.mapper';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { RedisAccessTokenModule } from '../../client/cache/accessToken/redis-acc
     HttpHealthIndicator,
     CSLContentService,
     CslHealth,
+    CSLCourseMapper,
   ],
   controllers: [CslController],
   exports: [CslHealth, CSLContentService],
