@@ -12,9 +12,11 @@ export const VALIDATION_SCHEMA = Joi.object({
   BLOB_CONNECTION_STRING: Joi.string().required(),
   BLOB_CONTAINER_NAME: Joi.string().required(),
   REDIS_ACCESS_TOKEN_HOST: Joi.string().required(),
-  REDIS_ACCESS_TOKEN_PASS: Joi.string().required(),
+  REDIS_ACCESS_TOKEN_PASS: Joi.string().required().allow(''),
+  REDIS_ACCESS_TOKEN_PORT: Joi.number().port().default(6380),
   REDIS_CONTENT_HOST: Joi.string().required(),
-  REDIS_CONTENT_PASS: Joi.string().required(),
+  REDIS_CONTENT_PASS: Joi.string().required().allow(''),
+  REDIS_CONTENT_PORT: Joi.number().port().default(6380),
   PORT: Joi.number().port().default(3000),
   NODE_ENV: Joi.string().allow('development', 'production').required(),
 });

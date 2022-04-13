@@ -9,16 +9,21 @@ import { CacheClient } from '../../../client/cache/cache-client.interface';
     CacheModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: async (configService: ConfigService) => ({
-        store: redisStore,
-        port: 6380,
-        auth_pass: configService.get<string>('REDIS_CONTENT_PASS'),
-        host: configService.get<string>('REDIS_CONTENT_HOST'),
-        tls: {
+      useFactory: async (configService: ConfigService) => {
+        const conf = {
+          store: redisStore,
+          port: configService.get<string>('REDIS_CONTENT_PORT'),
+          auth_pass: configService.get<string>('REDIS_CONTENT_PASS'),
           host: configService.get<string>('REDIS_CONTENT_HOST'),
-        },
-        ttl: 86400,
-      }),
+          ttl: 86400,
+        };
+        if (configService.get<string>('NODE_ENV') == 'production') {
+          conf['tls'] = {
+            host: configService.get<string>('REDIS_CONTENT_HOST'),
+          };
+        }
+        return conf;
+      },
     }),
   ],
   providers: [CacheClient],
