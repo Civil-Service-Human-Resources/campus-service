@@ -5,6 +5,7 @@ import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
 import { AppInsightsLogger } from './util/logging/appi-logger';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { loadAppInsights } from './appi';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -15,15 +16,6 @@ async function bootstrap() {
   // Logging
   const logger = await app.resolve(AppInsightsLogger);
   if (confService.get('NODE_ENV') != 'development') {
-    appInsights
-      .setup()
-      .setAutoCollectConsole(true, true)
-      .setAutoDependencyCorrelation(true)
-      .setAutoCollectRequests(true);
-    appInsights.defaultClient.context.tags[
-      appInsights.defaultClient.context.keys.cloudRole
-    ] = confService.get('APPLICATIONINSIGHTS_ROLE_NAME');
-    appInsights.start();
     logger.setAppInsightsEnabled(true);
   }
 
@@ -43,4 +35,5 @@ async function bootstrap() {
   await app.listen(PORT);
 }
 
+loadAppInsights();
 bootstrap();
