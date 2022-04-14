@@ -5,7 +5,7 @@ export class PagedStrandCategory {
   @ApiProperty()
   page: number;
 
-  @ApiProperty()
+  @ApiProperty({ type: LearningMaterial })
   results: LearningMaterial[];
 
   @ApiProperty()

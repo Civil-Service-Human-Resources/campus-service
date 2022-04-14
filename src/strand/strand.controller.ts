@@ -1,4 +1,4 @@
-import { Controller, Get, Param, ParseIntPipe, Query } from '@nestjs/common';
+import { Controller, Get, Param, Query } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { CacheClient } from '../client/cache/cache-client.interface';
 import { AppInsightsLogger } from '../util/logging/appi-logger';
