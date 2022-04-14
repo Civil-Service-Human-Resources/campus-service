@@ -11,6 +11,6 @@ export class LearningMaterialSearchResult {
   @ApiProperty()
   size: number;
 
-  @ApiProperty({ type: LearningMaterial })
+  @ApiProperty({ type: [LearningMaterial] })
   results: LearningMaterial[];
 }
