@@ -1,5 +1,5 @@
 import { Controller, Get, Param, ParseIntPipe, Query } from '@nestjs/common';
-import { ApiOkResponse } from '@nestjs/swagger';
+import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { CacheClient } from '../client/cache/cache-client.interface';
 import { AppInsightsLogger } from '../util/logging/appi-logger';
 import { PagedStrandCategory } from './models/strand-category.model';
@@ -9,6 +9,7 @@ import { ParseCategoryPipe } from './validators/parse-category-pipe';
 import { ParsePagePipe } from './validators/parse-page-pipe';
 import { ParseStrandPipe } from './validators/parse-strand-pipe';
 
+@ApiTags('Strands')
 @Controller('strands')
 export class StrandController {
   private readonly logger = new AppInsightsLogger(StrandController.name);
@@ -39,6 +40,10 @@ export class StrandController {
   }
 
   @Get('/:strandId/categories/:category')
+  @ApiOkResponse({
+    description: 'Strand category page detail successfully fetched',
+    type: PagedStrandCategory,
+  })
   async getStrandCategory(
     @Param('strandId', ParseStrandPipe) strandId: number,
     @Param('category', ParseCategoryPipe) category: string,

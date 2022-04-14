@@ -2,10 +2,11 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { AppInsightsLogger } from '../../../util/logging/appi-logger';
 import { HttpClientService } from '../http-client/http-client.service';
 import { Course } from '../models/output/course.model';
+import { CSLSearchResult } from '../models/output/search-results.model';
 
 @Injectable()
-export class ClientService {
-  private readonly logger = new AppInsightsLogger(ClientService.name);
+export class CSLClientService {
+  private readonly logger = new AppInsightsLogger(CSLClientService.name);
   constructor(private readonly httpClient: HttpClientService) {}
 
   async getCourseWithId(courseId: string): Promise<Course> {
@@ -19,6 +20,24 @@ export class ClientService {
         `CSL course with ID '${courseId}' does not exist`,
       );
     }
+    return resp.data;
+  }
+
+  async searchForCourses(
+    criteria: string,
+    page: number,
+  ): Promise<CSLSearchResult> {
+    this.logger.debug(`Searching CSL with criteria: ${criteria}`);
+
+    const resp = await this.httpClient.makeRequest<CSLSearchResult>({
+      url: `/search/courses`,
+      params: {
+        query: criteria,
+        size: 10,
+        page: page,
+      },
+      method: 'GET',
+    });
     return resp.data;
   }
 }
