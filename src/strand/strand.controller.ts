@@ -1,12 +1,12 @@
 import { Controller, Get, Param, ParseIntPipe, Query } from '@nestjs/common';
 import { ApiOkResponse } from '@nestjs/swagger';
 import { CacheClient } from '../client/cache/cache-client.interface';
-import { CSLContentService } from '../learning-material/csl/content-mapping/content.service';
 import { AppInsightsLogger } from '../util/logging/appi-logger';
 import { PagedStrandCategory } from './models/strand-category.model';
 import { Strand } from './models/strand.model';
 import { StrandService } from './strand.service';
 import { ParseCategoryPipe } from './validators/parse-category-pipe';
+import { ParsePagePipe } from './validators/parse-page-pipe';
 
 @Controller('strands')
 export class StrandController {
@@ -39,7 +39,7 @@ export class StrandController {
   async getStrandCategory(
     @Param('strandId', ParseIntPipe) strandId: number,
     @Param('category', ParseCategoryPipe) category: string,
-    @Query('page', ParseIntPipe) page: number,
+    @Query('page', ParsePagePipe) page: number,
   ): Promise<PagedStrandCategory> {
     const cacheKey = `strands:${strandId}:${category}:${page}`;
     let res = await this.categoryCache.getObject(cacheKey);

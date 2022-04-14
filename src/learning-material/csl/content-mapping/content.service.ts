@@ -21,7 +21,6 @@ export class CSLContentService {
   private loadContentCsv = async (): Promise<ContentRow[]> => {
     const cacheKey = `csl:csv:${this.cslConfig.csvFileName}`;
     const cachedContent = await this.cache.getObject(cacheKey);
-    this.logger.debug(cachedContent);
     if (cachedContent == null) {
       this.logger.debug(
         `Loading csv from blob storage '${this.cslConfig.csvFileName}'`,
