@@ -1,7 +1,7 @@
 import {
   ArgumentMetadata,
-  BadRequestException,
   Injectable,
+  NotFoundException,
   PipeTransform,
 } from '@nestjs/common';
 import { CSLContentService } from '../../learning-material/csl/content-mapping/content.service';
@@ -13,7 +13,7 @@ export class ParseStrandPipe implements PipeTransform {
     const strands = [1, 2, 3, 4, 5];
     const convertedValue = parseInt(value);
     if (!convertedValue || !strands.includes(convertedValue)) {
-      throw new BadRequestException('invalid strand supplied');
+      throw new NotFoundException('invalid strand supplied');
     } else {
       return convertedValue;
     }
