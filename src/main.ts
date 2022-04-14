@@ -15,6 +15,7 @@ async function bootstrap() {
 
   // Logging
   const logger = await app.resolve(AppInsightsLogger);
+  logger.info('Enabling app insights logger ');
   if (confService.get('NODE_ENV') != 'development') {
     logger.setAppInsightsEnabled(true);
   }
@@ -23,6 +24,7 @@ async function bootstrap() {
   app.useLogger(logger);
 
   // Swagger
+  logger.info('Enabling Swagger');
   const config = new DocumentBuilder()
     .setTitle('Campus Service')
     .setDescription('Backend service for the Campus website')
@@ -33,12 +35,10 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, document);
 
   // CORS
-  if (confService.get('CORS_ENABLED') == 'true') {
-    logger.info('Enabling CORS');
-    app.enableCors({
-      origin: confService.get('CAMPUS_FRONTEND_URL'),
-    });
-  }
+  logger.info('Enabling CORS');
+  app.enableCors({
+    origin: confService.get('CAMPUS_FRONTEND_URL'),
+  });
 
   await app.listen(PORT);
 }
