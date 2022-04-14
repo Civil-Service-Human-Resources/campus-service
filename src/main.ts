@@ -33,9 +33,12 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, document);
 
   // CORS
-  app.enableCors({
-    origin: confService.get('CAMPUS_FRONTEND_URL'),
-  });
+  const campusFe = confService.get('CAMPUS_FRONTEND_URL');
+  if (campusFe) {
+    app.enableCors({
+      origin: campusFe,
+    });
+  }
 
   await app.listen(PORT);
 }

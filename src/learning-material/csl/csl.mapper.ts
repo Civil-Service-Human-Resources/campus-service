@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { first } from 'rxjs';
 import { LearningMaterial } from '../models/LearningMaterial';
 import { CSLConfig } from './csl.config';
 import { Course } from './models/output/course.model';

@@ -102,7 +102,7 @@ describe('CSLMapper', () => {
   });
 
   it('Should correctly calculate the course type as an individual type', async () => {
-    const sampleModules: Module[] = [loadModule(0, 'Video')];
+    const sampleModules: Module[] = [loadModule(0, 'video')];
     sampleCourse.modules = sampleModules;
     const resp = await mapperUnderTest.mapCourseToLearningMaterial(
       sampleCourse,
