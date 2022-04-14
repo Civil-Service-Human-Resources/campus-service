@@ -1,12 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { CSLContentService } from '../learning-material/csl/content-mapping/content.service';
+import { CslService } from '../learning-material/csl/csl.service';
+import { LearningMaterial } from '../learning-material/models/LearningMaterial';
 import { AppInsightsLogger } from '../util/logging/appi-logger';
+import { PagedStrandCategory } from './models/strand-category.model';
 import { Strand } from './models/strand.model';
 
 @Injectable()
 export class StrandService {
   private readonly logger = new AppInsightsLogger(StrandService.name);
-  constructor(private readonly cslContentService: CSLContentService) {}
+  constructor(
+    private readonly cslContentService: CSLContentService,
+    private readonly cslService: CslService,
+  ) {}
 
   async getStrandCategories(strandId: number): Promise<Strand> {
     this.logger.debug(`Fetching strand ${strandId}`);
@@ -19,5 +25,33 @@ export class StrandService {
       }),
     };
     return strand;
+  }
+
+  async getCoursesForStrandAndCategory(
+    strandId: number,
+    category: string,
+    page: number,
+  ): Promise<PagedStrandCategory> {
+    const recordsPerPage = 10;
+    const courseIds =
+      await this.cslContentService.getCoursesForStrandAndCategory(
+        strandId,
+        category,
+      );
+    const courseData = await this.cslService.getMultipleCourses(courseIds);
+    const orderedData = courseData.sort((a, b) => (a.title > b.title ? 1 : -1));
+    const pageData: LearningMaterial[] = [];
+    for (
+      let i = (page - 1) * recordsPerPage;
+      i < page * recordsPerPage && i < orderedData.length;
+      i++
+    ) {
+      pageData.push(orderedData[i]);
+    }
+    return {
+      page: page,
+      results: pageData,
+      totalResults: orderedData.length,
+    };
   }
 }
