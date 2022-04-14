@@ -39,15 +39,13 @@ export class StrandService {
         category,
       );
     const courseData = await this.cslService.getMultipleCourses(courseIds);
-    const orderedData = courseData.sort((a, b) => (a.title > b.title ? 1 : -1));
-    const pageData: LearningMaterial[] = [];
-    for (
-      let i = (page - 1) * recordsPerPage;
-      i < page * recordsPerPage && i < orderedData.length;
-      i++
-    ) {
-      pageData.push(orderedData[i]);
-    }
+    const orderedData = courseData.sort((a, b) =>
+      a.title.localeCompare(b.title, 'en', { sensitivity: 'base' }),
+    );
+    const pageData: LearningMaterial[] = orderedData.slice(
+      (page - 1) * recordsPerPage,
+      page * recordsPerPage,
+    );
     return {
       page: page,
       results: pageData,
