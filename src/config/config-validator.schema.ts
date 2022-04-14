@@ -9,7 +9,6 @@ export const VALIDATION_SCHEMA = Joi.object({
   CSL_LEARNING_CATALOGUE_BASE_URL: Joi.string().uri().required(),
   CSL_LEARNING_CATALOGUE_ACCESS_TOKEN_ID: Joi.string().default('csl-token'),
   CSL_LEARNING_FRONTEND_URL: Joi.string().uri().required(),
-  CORS_ENABLED: Joi.bool().default(true),
   CAMPUS_FRONTEND_URL: Joi.string().uri().required(),
   CSL_CONTENT_CSV_FILENAME: Joi.string().default('course_mapping.csv'),
   BLOB_CONNECTION_STRING: Joi.string().required(),
