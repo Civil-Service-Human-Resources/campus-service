@@ -7,6 +7,7 @@ import { Strand } from './models/strand.model';
 import { StrandService } from './strand.service';
 import { ParseCategoryPipe } from './validators/parse-category-pipe';
 import { ParsePagePipe } from './validators/parse-page-pipe';
+import { ParseStrandPipe } from './validators/parse-strand-pipe';
 
 @Controller('strands')
 export class StrandController {
@@ -22,7 +23,9 @@ export class StrandController {
     description: 'Strand page detail successfully fetched',
     type: Strand,
   })
-  async getStrand(@Param('strandId') strandId: number): Promise<Strand> {
+  async getStrand(
+    @Param('strandId', ParseStrandPipe) strandId: number,
+  ): Promise<Strand> {
     const cacheKey = `strands:${strandId}`;
     let res = await this.cache.getObject(cacheKey);
     if (res == null) {
@@ -37,7 +40,7 @@ export class StrandController {
 
   @Get('/:strandId/categories/:category')
   async getStrandCategory(
-    @Param('strandId', ParseIntPipe) strandId: number,
+    @Param('strandId', ParseStrandPipe) strandId: number,
     @Param('category', ParseCategoryPipe) category: string,
     @Query('page', ParsePagePipe) page: number,
   ): Promise<PagedStrandCategory> {
