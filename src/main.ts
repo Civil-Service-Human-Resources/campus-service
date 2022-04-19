@@ -6,6 +6,7 @@ import { ConfigService } from '@nestjs/config';
 import { AppInsightsLogger } from './util/logging/appi-logger';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { loadAppInsights } from './appi';
+import { HttpExceptionFilter } from './util/filters/http-exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -39,6 +40,10 @@ async function bootstrap() {
   app.enableCors({
     origin: confService.get('CAMPUS_FRONTEND_URL'),
   });
+
+  // Filters
+  logger.info('Adding global filters');
+  app.useGlobalFilters(new HttpExceptionFilter());
 
   await app.listen(PORT);
 }
