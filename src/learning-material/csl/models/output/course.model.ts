@@ -2,7 +2,7 @@ import { LearningProvider } from './learning-provider.model';
 import { Module } from './module.model';
 import { Owner } from './owner.model';
 
-export interface Course {
+export class Course {
   id: string;
   title: string;
   shortDescription: string;

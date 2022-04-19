@@ -5,6 +5,7 @@ import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
 import { AppInsightsLogger } from './util/logging/appi-logger';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { loadAppInsights } from './appi';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -14,16 +15,8 @@ async function bootstrap() {
 
   // Logging
   const logger = await app.resolve(AppInsightsLogger);
+  logger.info('Enabling app insights logger ');
   if (confService.get('NODE_ENV') != 'development') {
-    appInsights
-      .setup()
-      .setAutoCollectConsole(true, true)
-      .setAutoDependencyCorrelation(true)
-      .setAutoCollectRequests(true);
-    appInsights.defaultClient.context.tags[
-      appInsights.defaultClient.context.keys.cloudRole
-    ] = confService.get('APPLICATIONINSIGHTS_ROLE_NAME');
-    appInsights.start();
     logger.setAppInsightsEnabled(true);
   }
 
@@ -31,6 +24,7 @@ async function bootstrap() {
   app.useLogger(logger);
 
   // Swagger
+  logger.info('Enabling Swagger');
   const config = new DocumentBuilder()
     .setTitle('Campus Service')
     .setDescription('Backend service for the Campus website')
@@ -40,7 +34,14 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
+  // CORS
+  logger.info('Enabling CORS');
+  app.enableCors({
+    origin: confService.get('CAMPUS_FRONTEND_URL'),
+  });
+
   await app.listen(PORT);
 }
 
+loadAppInsights();
 bootstrap();
