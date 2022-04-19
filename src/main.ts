@@ -39,7 +39,7 @@ async function bootstrap() {
   // CORS
   logger.info('Enabling CORS');
   app.enableCors({
-    origin: confService.get('CAMPUS_FRONTEND_URL'),
+    origin: confService.get<string>('CAMPUS_FRONTEND_URL').split(','),
   });
 
   // Filters
