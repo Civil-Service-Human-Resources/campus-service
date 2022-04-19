@@ -60,7 +60,6 @@ export class HttpClientService {
     let token = await this.tokenStore.getObject(accessTokenId);
     if (token === null) {
       token = await this.getNewToken();
-      console.log(token);
       this.tokenStore.setObject(accessTokenId, token);
     }
     const tokenContent = token.accessToken;
