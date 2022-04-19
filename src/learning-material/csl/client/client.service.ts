@@ -35,6 +35,7 @@ export class CSLClientService {
         query: criteria,
         size: 10,
         page: page,
+        cost: 0,
       },
       method: 'GET',
     });
