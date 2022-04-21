@@ -59,7 +59,7 @@ export class HttpClientService {
     const accessTokenId = this.config.accessTokenId;
     const token = await this.tokenStore.getObjectWithCallback(
       accessTokenId,
-      this.getNewToken,
+      async () => await this.getNewToken(),
     );
     const tokenContent = token.accessToken;
     axiosConf.headers = {
