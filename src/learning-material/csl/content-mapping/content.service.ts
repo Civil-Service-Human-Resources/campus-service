@@ -19,61 +19,62 @@ export class CSLContentService {
   ) {}
 
   private loadContentCsv = async (): Promise<ContentRow[]> => {
-    const cacheKey = `csl:csv:${this.cslConfig.csvFileName}`;
-    const cachedContent = await this.cache.getObject(cacheKey);
-    if (cachedContent == null) {
-      this.logger.debug(
-        `Loading csv from blob storage '${this.cslConfig.csvFileName}'`,
-      );
-      const content = await this.blobService.getFile(
-        this.cslConfig.csvFileName,
-      );
-      this.logger.debug(`Content: ${content}`);
+    this.logger.debug(
+      `Loading csv from blob storage '${this.cslConfig.csvFileName}'`,
+    );
+    const content = await this.blobService.getFile(this.cslConfig.csvFileName);
+    this.logger.debug(`Content: ${content}`);
 
-      return new Promise((resolve, reject) => {
-        parse(
-          content,
-          {
-            delimiter: ',',
-            columns: this.csvHeaders,
-            fromLine: 2,
-            trim: true,
-          },
-          (error, result: ContentRow[]) => {
-            if (error) {
-              this.logger.error(error);
-              reject(error);
-            }
-            this.cache.setObject(cacheKey, result);
-            resolve(result);
-          },
-        );
-      });
-    } else {
-      return cachedContent;
-    }
+    return new Promise((resolve, reject) => {
+      parse(
+        content,
+        {
+          delimiter: ',',
+          columns: this.csvHeaders,
+          fromLine: 2,
+          trim: true,
+        },
+        (error, result: ContentRow[]) => {
+          if (error) {
+            this.logger.error(error);
+            reject(error);
+          }
+          resolve(result);
+        },
+      );
+    });
+  };
+
+  private fetchContentCsv = async (): Promise<ContentRow[]> => {
+    const cacheKey = `csl:csv:${this.cslConfig.csvFileName}`;
+    return await this.cache.getObjectWithCallback(
+      cacheKey,
+      this.loadContentCsv,
+    );
+  };
+
+  private extractCategoriesFromCsv = async () => {
+    const contentRows = await this.fetchContentCsv();
+    return Array.from(new Set(contentRows.map((cr) => cr.category)));
   };
 
   async getAllCategories() {
     const cacheKey = 'csl:categories';
-    let res = await this.catgegoryCache.getObject(cacheKey);
-    if (!res) {
-      const contentRows = await this.loadContentCsv();
-      res = Array.from(new Set(contentRows.map((cr) => cr.category)));
-      this.catgegoryCache.setObject(cacheKey, res);
-    }
-    return res;
-  }
-
-  async getRelevantCategoriesForStrand(strand: number) {
-    const contentRows = await this.loadContentCsv();
-    return new Set(
-      contentRows.filter((c) => c.strandID == strand).map((c) => c.category),
+    return await this.catgegoryCache.getObjectWithCallback(
+      cacheKey,
+      this.extractCategoriesFromCsv,
     );
   }
 
+  getRelevantCategoriesForStrand = async (strand: number) => {
+    const contentRows = await this.fetchContentCsv();
+    return new Set(
+      contentRows.filter((c) => c.strandID == strand).map((c) => c.category),
+    );
+  };
+
   getCoursesForStrandAndCategory = async (strand: number, category: string) => {
-    const contentRows = await this.loadContentCsv();
+    const contentRows = await this.fetchContentCsv();
     return contentRows
       .filter((c) => c.category == category && c.strandID == strand)
       .map((c) => c.courseID);

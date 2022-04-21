@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { CslService } from './csl.service';
 import { CslController } from './csl.controller';
-import { ClientService } from './client/client.service';
+import { CSLClientService } from './client/client.service';
 import { HttpClientService } from './http-client/http-client.service';
 import { CSLConfig } from './csl.config';
 import { CslHealth } from './csl.health';
@@ -25,7 +25,7 @@ import { CSLCourseMapper } from './csl.mapper';
   ],
   providers: [
     CslService,
-    ClientService,
+    CSLClientService,
     HttpClientService,
     CSLConfig,
     HttpHealthIndicator,

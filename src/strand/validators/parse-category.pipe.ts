@@ -1,7 +1,7 @@
 import {
   ArgumentMetadata,
+  BadRequestException,
   Injectable,
-  NotFoundException,
   PipeTransform,
 } from '@nestjs/common';
 import { CSLContentService } from '../../learning-material/csl/content-mapping/content.service';
@@ -14,7 +14,7 @@ export class ParseCategoryPipe implements PipeTransform {
     convertedValue = convertedValue.replace(/_/g, ' ');
     const categories = await this.cslContentService.getAllCategories();
     if (!categories.includes(convertedValue)) {
-      throw new NotFoundException('invalid category supplied');
+      throw new BadRequestException('invalid category supplied');
     }
     return convertedValue;
   }

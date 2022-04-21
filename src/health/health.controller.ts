@@ -1,6 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
 import { HealthCheckService, HealthCheck } from '@nestjs/terminus';
-import { CslHealth } from '../learning-material/csl/csl.health';
+import { CslHealth } from 'src/learning-material/csl/csl.health';
 
 @Controller('health')
 export class HealthController {

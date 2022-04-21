@@ -29,12 +29,10 @@ class CSLConfigMock {
 }
 
 class CacheClientMock {
-  getObject(cacheKey: string) {
-    return null;
-  }
-
-  setObject(cacheKey: string, rows: ContentRow[]) {
-    return null;
+  callbackRes: any;
+  async getObjectWithCallback(cacheKey: string, callback) {
+    this.callbackRes = await callback();
+    return this.callbackRes;
   }
 }
 
@@ -68,11 +66,11 @@ describe('CSLContentService', () => {
   });
 
   it('should get a course ID for a strand / category combination', async () => {
-    const resp = await contentService.getCoursesForStrandAndCategory(
+    const res = await contentService.getCoursesForStrandAndCategory(
       1,
       'security',
     );
-    expect(resp).toEqual(['001']);
+    expect(res).toEqual(['001']);
   });
 
   it('should get multiple course IDs for a strand / category combination', async () => {

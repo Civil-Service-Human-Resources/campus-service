@@ -6,6 +6,7 @@ import { VALIDATION_SCHEMA } from './config/config-validator.schema';
 import { CslModule } from './learning-material/csl/csl.module';
 import { HealthController } from './health/health.controller';
 import { StrandModule } from './strand/strand.module';
+import { SearchModule } from './search/search.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { StrandModule } from './strand/strand.module';
     CslModule,
     TerminusModule,
     StrandModule,
+    SearchModule,
   ],
   controllers: [HealthController],
 })

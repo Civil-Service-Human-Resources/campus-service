@@ -11,7 +11,6 @@ export class RedisAccessTokenService extends CacheClient<AccessToken> {
 
   override async setObject(tokenId: string, token: AccessToken) {
     const stringedToken = await JSON.stringify(token);
-    console.log(stringedToken);
     return await this.tokenStore.set(tokenId, stringedToken, {
       ttl: token.expiresIn,
     });

@@ -1,6 +1,6 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
-import * as FormData from 'form-data';
+import FormData from 'form-data';
 import { AccessToken } from '../../../client/cache/accessToken/access-token.model';
 import { RedisAccessTokenService } from '../../../client/cache/accessToken/redis-access-token-cache.service';
 import { AppInsightsLogger } from '../../../util/logging/appi-logger';
@@ -57,12 +57,10 @@ export class HttpClientService {
 
   private requestInterceptor = async (axiosConf: AxiosRequestConfig) => {
     const accessTokenId = this.config.accessTokenId;
-    let token = await this.tokenStore.getObject(accessTokenId);
-    if (token === null) {
-      token = await this.getNewToken();
-      console.log(token);
-      this.tokenStore.setObject(accessTokenId, token);
-    }
+    const token = await this.tokenStore.getObjectWithCallback(
+      accessTokenId,
+      async () => await this.getNewToken(),
+    );
     const tokenContent = token.accessToken;
     axiosConf.headers = {
       Authorization: `Bearer ${tokenContent}`,
