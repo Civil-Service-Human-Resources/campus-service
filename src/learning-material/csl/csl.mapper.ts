@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { LearningMaterial } from '../models/LearningMaterial';
-import { LearningMaterialSearchResult } from '../models/LearningmaterialSearchResult';
+import { LearningMaterialSearchResult } from '../../search/models/LearningmaterialSearchResult';
 import { CSLConfig } from './csl.config';
 import { Course } from './models/output/course.model';
 import { CSLSearchResult } from './models/output/search-results.model';
@@ -11,6 +11,7 @@ export class CSLCourseMapper {
 
   public async mapSearchResultsToLearningMaterial(
     results: CSLSearchResult,
+    originalPage: number,
   ): Promise<LearningMaterialSearchResult> {
     const convertedCourses = await Promise.all(
       results.results.map(
@@ -18,7 +19,7 @@ export class CSLCourseMapper {
       ),
     );
     return {
-      page: results.page,
+      page: originalPage,
       results: convertedCourses,
       size: results.size,
       totalResults: results.totalResults,

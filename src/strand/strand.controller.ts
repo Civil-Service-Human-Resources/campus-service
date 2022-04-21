@@ -28,15 +28,12 @@ export class StrandController {
     @Param('strandId', ParseStrandPipe) strandId: number,
   ): Promise<Strand> {
     const cacheKey = `strands:${strandId}`;
-    let res = await this.cache.getObject(cacheKey);
-    if (res == null) {
+    return await this.cache.getObjectWithCallback(cacheKey, async () => {
       this.logger.debug(
         `Strand cache result for strandId ${strandId} was null`,
       );
-      res = await this.strandService.getStrandCategories(strandId);
-      await this.cache.setObject(cacheKey, res);
-    }
-    return res;
+      return await this.strandService.getStrandCategories(strandId);
+    });
   }
 
   @Get('/:strandId/categories/:category')
@@ -50,15 +47,15 @@ export class StrandController {
     @Query('page', ParsePagePipe) page: number,
   ): Promise<PagedStrandCategory> {
     const cacheKey = `strands:${strandId}:${category}:${page}`;
-    let res = await this.categoryCache.getObject(cacheKey);
-    if (!res) {
-      res = await this.strandService.getCoursesForStrandAndCategory(
-        strandId,
-        category,
-        page,
-      );
-      await this.categoryCache.setObject(cacheKey, res);
-    }
-    return res;
+    return await this.categoryCache.getObjectWithCallback(
+      cacheKey,
+      async () => {
+        return await this.strandService.getCoursesForStrandAndCategory(
+          strandId,
+          category,
+          page,
+        );
+      },
+    );
   }
 }

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CacheClient } from '../client/cache/cache-client.interface';
 import { CslService } from '../learning-material/csl/csl.service';
-import { LearningMaterialSearchResult } from '../learning-material/models/LearningmaterialSearchResult';
+import { LearningMaterialSearchResult } from './models/LearningmaterialSearchResult';
 
 @Injectable()
 export class SearchService {
@@ -12,11 +12,8 @@ export class SearchService {
 
   search = async (criteria: string, page: number) => {
     const cacheKey = `search:${criteria}:${page}`;
-    let res = await this.cache.getObject(cacheKey);
-    if (!res) {
-      res = await this.cslService.searchForCourses(criteria, page);
-      this.cache.setObject(cacheKey, res);
-    }
-    return res;
+    return await this.cache.getObjectWithCallback(cacheKey, async () => {
+      return await this.cslService.searchForCourses(criteria, page);
+    });
   };
 }

@@ -1,8 +1,9 @@
 import { Controller, Get, Query } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { LearningMaterialSearchResult } from '../learning-material/models/LearningmaterialSearchResult';
+import { LearningMaterialSearchResult } from './models/LearningmaterialSearchResult';
 import { ParsePagePipe } from '../strand/validators/parse-page.pipe';
 import { SearchService } from './search.service';
+import { ParseSearchQueryPipe } from './validators/search.query.pipe';
 
 @ApiTags('Search')
 @Controller('/search')
@@ -15,9 +16,9 @@ export class SearchController {
     type: LearningMaterialSearchResult,
   })
   async search(
-    @Query('query') criteria: string,
+    @Query('query', ParseSearchQueryPipe) query: string,
     @Query('page', ParsePagePipe) page: number,
   ): Promise<LearningMaterialSearchResult> {
-    return await this.service.search(criteria, page);
+    return await this.service.search(query, page);
   }
 }

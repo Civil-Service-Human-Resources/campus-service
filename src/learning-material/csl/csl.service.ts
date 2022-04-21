@@ -14,17 +14,10 @@ export class CslService {
 
   async getCourse(courseId: string) {
     const cacheKey = `csl:content:${courseId}`;
-    const cachedCourse = await this.cache.getObject(cacheKey);
-    if (cachedCourse == null) {
+    return await this.cache.getObjectWithCallback(cacheKey, async () => {
       const course = await this.clientService.getCourseWithId(courseId);
-      const convertedCourse = await this.mapper.mapCourseToLearningMaterial(
-        course,
-      );
-      await this.cache.setObject(cacheKey, convertedCourse);
-      return convertedCourse;
-    } else {
-      return cachedCourse;
-    }
+      return await this.mapper.mapCourseToLearningMaterial(course);
+    });
   }
 
   async getMultipleCourses(courseIds: string[]) {
@@ -33,6 +26,6 @@ export class CslService {
 
   async searchForCourses(criteria: string, page: number) {
     const res = await this.clientService.searchForCourses(criteria, page);
-    return await this.mapper.mapSearchResultsToLearningMaterial(res);
+    return await this.mapper.mapSearchResultsToLearningMaterial(res, page);
   }
 }

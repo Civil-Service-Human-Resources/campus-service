@@ -15,7 +15,7 @@ import { CacheClient } from '../../client/cache/cache-client.interface';
           port: configService.get<string>('REDIS_CONTENT_PORT'),
           auth_pass: configService.get<string>('REDIS_CONTENT_PASS'),
           host: configService.get<string>('REDIS_CONTENT_HOST'),
-          ttl: 86400,
+          ttl: 3600,
         };
         if (configService.get<string>('NODE_ENV') == 'production') {
           conf['tls'] = {

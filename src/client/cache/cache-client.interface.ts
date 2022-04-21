@@ -7,6 +7,18 @@ export class CacheClient<T> {
   private readonly logger = new AppInsightsLogger(CacheClient.name);
   constructor(@Inject(CACHE_MANAGER) readonly store: Cache) {}
 
+  async getObjectWithCallback(
+    key: string,
+    getContentCallback: () => Promise<T>,
+  ) {
+    let content = await this.store.get(key);
+    if (!content) {
+      content = await getContentCallback();
+      await this.setObject(key, content);
+    }
+    return content;
+  }
+
   async getObject(key: string): Promise<T> {
     try {
       this.logger.debug(`Getting data from cache with key: ${key}`);
