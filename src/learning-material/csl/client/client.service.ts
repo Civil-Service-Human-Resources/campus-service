@@ -34,7 +34,8 @@ export class CSLClientService {
       params: {
         query: criteria,
         size: 10,
-        page: page,
+        // CSL pages start at 0, so - 1 from the value passed in
+        page: page - 1,
         cost: 0,
       },
       method: 'GET',

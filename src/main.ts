@@ -7,6 +7,7 @@ import { AppInsightsLogger } from './util/logging/appi-logger';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { loadAppInsights } from './appi';
 import { HttpExceptionFilter } from './util/filters/http-exception.filter';
+import helmet from 'helmet';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -40,6 +41,10 @@ async function bootstrap() {
   app.enableCors({
     origin: confService.get<string>('CAMPUS_FRONTEND_URL').split(','),
   });
+
+  //Helmet
+  logger.info('Enabling Helmet');
+  app.use(helmet());
 
   // Filters
   logger.info('Adding global filters');
