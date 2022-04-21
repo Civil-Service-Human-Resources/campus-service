@@ -26,4 +26,8 @@ export class CslService {
       return cachedCourse;
     }
   }
+
+  async getMultipleCourses(courseIds: string[]) {
+    return Promise.all(courseIds.map(async (cId) => await this.getCourse(cId)));
+  }
 }

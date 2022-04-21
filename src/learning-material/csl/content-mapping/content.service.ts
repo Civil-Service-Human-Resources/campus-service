@@ -15,12 +15,12 @@ export class CSLContentService {
     private readonly blobService: BlobStorageService,
     private readonly cslConfig: CSLConfig,
     private readonly cache: CacheClient<ContentRow[]>,
+    private readonly catgegoryCache: CacheClient<Array<string>>,
   ) {}
 
   private loadContentCsv = async (): Promise<ContentRow[]> => {
     const cacheKey = `csl:csv:${this.cslConfig.csvFileName}`;
     const cachedContent = await this.cache.getObject(cacheKey);
-    this.logger.debug(cachedContent);
     if (cachedContent == null) {
       this.logger.debug(
         `Loading csv from blob storage '${this.cslConfig.csvFileName}'`,
@@ -53,6 +53,17 @@ export class CSLContentService {
       return cachedContent;
     }
   };
+
+  async getAllCategories() {
+    const cacheKey = 'csl:categories';
+    let res = await this.catgegoryCache.getObject(cacheKey);
+    if (!res) {
+      const contentRows = await this.loadContentCsv();
+      res = Array.from(new Set(contentRows.map((cr) => cr.category)));
+      this.catgegoryCache.setObject(cacheKey, res);
+    }
+    return res;
+  }
 
   async getRelevantCategoriesForStrand(strand: number) {
     const contentRows = await this.loadContentCsv();

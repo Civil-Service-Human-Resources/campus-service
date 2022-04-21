@@ -34,6 +34,6 @@ import { CSLCourseMapper } from './csl.mapper';
     CSLCourseMapper,
   ],
   controllers: [CslController],
-  exports: [CslHealth, CSLContentService],
+  exports: [CslHealth, CSLContentService, CslService],
 })
 export class CslModule {}
