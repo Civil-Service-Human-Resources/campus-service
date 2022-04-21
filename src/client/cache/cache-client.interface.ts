@@ -11,7 +11,7 @@ export class CacheClient<T> {
     key: string,
     getContentCallback: () => Promise<T>,
   ) {
-    let content = await this.store.get(key);
+    let content = await this.getObject(key);
     if (!content) {
       content = await getContentCallback();
       await this.setObject(key, content);
