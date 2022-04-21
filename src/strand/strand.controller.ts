@@ -5,9 +5,9 @@ import { AppInsightsLogger } from '../util/logging/appi-logger';
 import { PagedStrandCategory } from './models/strand-category.model';
 import { Strand } from './models/strand.model';
 import { StrandService } from './strand.service';
-import { ParseCategoryPipe } from './validators/parse-category-pipe';
-import { ParsePagePipe } from './validators/parse-page-pipe';
-import { ParseStrandPipe } from './validators/parse-strand-pipe';
+import { ParseCategoryPipe } from './validators/parse-category.pipe';
+import { ParsePagePipe } from './validators/parse-page.pipe';
+import { ParseStrandPipe } from './validators/parse-strand.pipe';
 
 @ApiTags('Strands')
 @Controller('strands')

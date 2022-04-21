@@ -7,7 +7,6 @@ import { AppInsightsLogger } from './util/logging/appi-logger';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { loadAppInsights } from './appi';
 import { HttpExceptionFilter } from './util/filters/http-exception.filter';
-import axios from 'axios';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

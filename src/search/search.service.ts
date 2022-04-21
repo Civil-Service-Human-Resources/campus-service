@@ -14,7 +14,8 @@ export class SearchService {
     const cacheKey = `search:${criteria}:${page}`;
     let res = await this.cache.getObject(cacheKey);
     if (!res) {
-      res = await this.cslService.searchForCourses(criteria, page);
+      // CSL pages start at 0, so - 1 from the value passed in
+      res = await this.cslService.searchForCourses(criteria, page - 1);
       this.cache.setObject(cacheKey, res);
     }
     return res;
