@@ -5,7 +5,7 @@ import { ParseCategoryPipe } from './parse-category.pipe';
 
 class MockCslContentService {
   async getAllCategories() {
-    return ['category 1', 'Category 2'];
+    return ['category_1', 'category_2'];
   }
 }
 
@@ -26,13 +26,13 @@ describe('ParseCategoryPipe', () => {
   });
 
   it('Should correctly transform an input category', async () => {
-    const res = await categoryPipe.transform('category_1', null);
-    expect(res).toEqual('category 1');
+    const res = await categoryPipe.transform('Category_1', null);
+    expect(res).toEqual('category_1');
   });
 
   it('Should correctly transform an input category with a capital', async () => {
-    const res = await categoryPipe.transform('Category_2', null);
-    expect(res).toEqual('Category 2');
+    const res = await categoryPipe.transform('Category 2', null);
+    expect(res).toEqual('category_2');
   });
 
   it('Should throw a bad request exception when an invalid category is passed in', async () => {

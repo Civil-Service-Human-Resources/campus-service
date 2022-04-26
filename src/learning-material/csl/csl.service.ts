@@ -21,7 +21,13 @@ export class CslService {
   }
 
   async getMultipleCourses(courseIds: string[]) {
-    return Promise.all(courseIds.map(async (cId) => await this.getCourse(cId)));
+    const courses = [];
+    for (let i = 0; i < courseIds.length; i++) {
+      const courseId = courseIds[i];
+      const course = await this.getCourse(courseId);
+      courses.push(course);
+    }
+    return courses;
   }
 
   async searchForCourses(criteria: string, page: number) {
