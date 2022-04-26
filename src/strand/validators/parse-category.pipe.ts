@@ -12,7 +12,7 @@ export class ParseCategoryPipe implements PipeTransform {
   async transform(value: any, metadata: ArgumentMetadata) {
     const convertedValue: string = value;
     const categories = await this.cslContentService.getAllCategories();
-    if (!categories.includes(convertedValue)) {
+    if (!categories.includes(convertedValue.toLocaleLowerCase())) {
       throw new BadRequestException('invalid category supplied');
     }
     return convertedValue;
