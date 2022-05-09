@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { ParagraphContent } from './ParagraphContent';
 
 export class LearningMaterial {
   @ApiProperty()
@@ -10,8 +11,11 @@ export class LearningMaterial {
   @ApiProperty()
   title: string;
 
-  @ApiProperty()
-  description: string;
+  @ApiProperty({
+    description: 'Array of paragraphs that make up the description',
+    type: [ParagraphContent],
+  })
+  description: ParagraphContent[];
 
   @ApiProperty()
   duration: number;
@@ -22,8 +26,11 @@ export class LearningMaterial {
   @ApiProperty()
   shortDescription?: string;
 
-  @ApiProperty()
-  outcomes: string;
+  @ApiProperty({
+    description: 'Array of paragraphs that make up the learning outcomes',
+    type: [ParagraphContent],
+  })
+  outcomes: ParagraphContent[];
 
   @ApiProperty()
   sourceHref: string;
