@@ -4,9 +4,9 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 
 trigger:
-  - develop
-  - feature/*
-  - release/*
+  tags:
+    include:
+      - '*'
 
 pool:
   vmImage: ubuntu-latest
@@ -31,7 +31,7 @@ steps:
   - task: Docker@2
     inputs:
       containerRegistry: 'Campus Azure Container Registry'
-      repository: 'campus-service/test'
+      repository: 'campus-service/prod'
       command: 'buildAndPush'
       Dockerfile: '**/Dockerfile'
       tags: '$(Build.SourceBranchName)'
