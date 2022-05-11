@@ -79,6 +79,19 @@ describe('CSLMapper', () => {
     expect(resp.sourceHref).toEqual('http://test.com/courses/TEST01');
   });
 
+  it('should correctly render a carriage-returned bullet list into a list', async () => {
+    const course = loadCourse();
+    course.learningOutcomes = 'paragraph1:\r\n• bullet1\r\n• bullet2';
+    const resp = await mapperUnderTest.mapCourseToLearningMaterial(course);
+    const paragraphContent = resp.outcomes;
+    expect(paragraphContent[0].label).toEqual('paragraph');
+    expect(paragraphContent[0].content[0]).toEqual('paragraph1:');
+    expect(paragraphContent[1].label).toEqual('bullets');
+    expect(paragraphContent[1].content[0]).toEqual(' bullet1');
+    expect(paragraphContent[1].label).toEqual('bullets');
+    expect(paragraphContent[1].content[1]).toEqual(' bullet2');
+  });
+
   it('Should correctly render bullet-pointed content into a list', async () => {
     const course = loadCourse();
     course.description =

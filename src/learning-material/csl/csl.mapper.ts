@@ -77,6 +77,9 @@ export class CSLCourseMapper {
           }
         }
       }
+      if (inList) {
+        resultContent.push(currentParagraph);
+      }
     }
 
     return resultContent;
