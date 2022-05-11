@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { AppInsightsLogger } from '../../../util/logging/appi-logger';
 import { HttpClientService } from '../http-client/http-client.service';
 import { Course } from '../models/output/course.model';
+import { GetCourses } from '../models/output/get-courses.model';
 import { CSLSearchResult } from '../models/output/search-results.model';
 
 @Injectable()
@@ -9,18 +10,23 @@ export class CSLClientService {
   private readonly logger = new AppInsightsLogger(CSLClientService.name);
   constructor(private readonly httpClient: HttpClientService) {}
 
-  async getCourseWithId(courseId: string): Promise<Course> {
-    this.logger.debug(`Getting course from CSL with ID: ${courseId}`);
-    const resp = await this.httpClient.makeRequest<Course>({
-      url: `/courses/${courseId}`,
-      method: 'GET',
-    });
-    if (resp.status === 404) {
-      throw new NotFoundException(
-        `CSL course with ID '${courseId}' does not exist`,
-      );
+  async getCoursesWithIds(courseIds: string[]): Promise<Course[]> {
+    this.logger.debug(
+      `Getting ${courseIds.length} courses from CSL with IDs: ${courseIds}`,
+    );
+    const totalCourses = [];
+    while (courseIds.length) {
+      const courseIdSubArr = courseIds.splice(0, 20);
+      const resp = await this.httpClient.makeRequest<Course[]>({
+        url: `/courses`,
+        method: 'GET',
+        params: {
+          courseId: courseIdSubArr.join(','),
+        },
+      });
+      totalCourses.push(...resp.data);
     }
-    return resp.data;
+    return totalCourses;
   }
 
   async searchForCourses(

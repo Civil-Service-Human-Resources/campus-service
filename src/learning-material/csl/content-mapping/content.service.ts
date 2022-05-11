@@ -55,7 +55,13 @@ export class CSLContentService {
 
   private extractCategoriesFromCsv = async () => {
     const contentRows = await this.fetchContentCsv();
-    return Array.from(new Set(contentRows.map((cr) => cr.category)));
+    return Array.from(
+      new Set(
+        contentRows.map((cr) =>
+          cr.category.replace(/ /g, '_').toLocaleLowerCase(),
+        ),
+      ),
+    );
   };
 
   async getAllCategories() {
@@ -76,7 +82,11 @@ export class CSLContentService {
   getCoursesForStrandAndCategory = async (strand: number, category: string) => {
     const contentRows = await this.fetchContentCsv();
     return contentRows
-      .filter((c) => c.category == category && c.strandID == strand)
+      .filter(
+        (c) =>
+          c.category.replace(/ /g, '_').toLocaleLowerCase() == category &&
+          c.strandID == strand,
+      )
       .map((c) => c.courseID);
   };
 }

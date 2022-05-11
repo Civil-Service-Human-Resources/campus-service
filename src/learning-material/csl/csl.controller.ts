@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, NotFoundException, Param } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { LearningMaterial } from '../models/LearningMaterial';
 import { CslService } from './csl.service';
@@ -16,6 +16,12 @@ export class CslController {
   async getLearningMaterialBySupplierAndId(
     @Param('materialId') materialId: string,
   ): Promise<LearningMaterial> {
-    return this.service.getCourse(materialId);
+    const course = this.service.getCourse(materialId);
+    if (!course) {
+      throw new NotFoundException(
+        `CSL course with ID ${materialId} was not found`,
+      );
+    }
+    return course;
   }
 }

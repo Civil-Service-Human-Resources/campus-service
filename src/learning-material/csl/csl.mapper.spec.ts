@@ -68,13 +68,31 @@ describe('CSLMapper', () => {
     const resp = await mapperUnderTest.mapCourseToLearningMaterial(
       sampleCourse,
     );
-    expect(resp.description).toEqual('description');
+    expect(resp.description[0].content[0]).toEqual('description');
+    expect(resp.description[0].label).toEqual('paragraph');
     expect(resp.shortDescription).toEqual('shortDescription');
-    expect(resp.outcomes).toEqual('learningOutcomes');
+    expect(resp.outcomes[0].content[0]).toEqual('learningOutcomes');
+    expect(resp.outcomes[0].label).toEqual('paragraph');
     expect(resp.id).toEqual('TEST01');
     expect(resp.title).toEqual('title');
     expect(resp.source).toEqual('csl');
     expect(resp.sourceHref).toEqual('http://test.com/courses/TEST01');
+  });
+
+  it('Should correctly render bullet-pointed content into a list', async () => {
+    const course = loadCourse();
+    course.description =
+      'paragraph1\n•\tbullet1\n•\tbullet2\nparagraph2\nparagraph3';
+    const resp = await mapperUnderTest.mapCourseToLearningMaterial(course);
+    const paragraphContent = resp.description;
+    expect(paragraphContent[0].label).toEqual('paragraph');
+    expect(paragraphContent[0].content[0]).toEqual('paragraph1');
+    expect(paragraphContent[1].label).toEqual('bullets');
+    expect(paragraphContent[1].content[0]).toEqual('bullet1');
+    expect(paragraphContent[1].label).toEqual('bullets');
+    expect(paragraphContent[1].content[1]).toEqual('bullet2');
+    expect(paragraphContent[2].label).toEqual('paragraph');
+    expect(paragraphContent[2].content[0]).toEqual('paragraph2');
   });
 
   it('Should correctly calculate the amount of minutes a course takes to complete', async () => {

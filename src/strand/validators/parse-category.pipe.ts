@@ -10,10 +10,9 @@ import { CSLContentService } from '../../learning-material/csl/content-mapping/c
 export class ParseCategoryPipe implements PipeTransform {
   constructor(private readonly cslContentService: CSLContentService) {}
   async transform(value: any, metadata: ArgumentMetadata) {
-    let convertedValue: string = value;
-    convertedValue = convertedValue.replace(/_/g, ' ');
+    const convertedValue: string = value;
     const categories = await this.cslContentService.getAllCategories();
-    if (!categories.includes(convertedValue)) {
+    if (!categories.includes(convertedValue.toLocaleLowerCase())) {
       throw new BadRequestException('invalid category supplied');
     }
     return convertedValue;
