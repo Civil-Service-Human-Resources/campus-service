@@ -26,11 +26,11 @@ export class LearningMaterial {
   @ApiProperty()
   shortDescription?: string;
 
-  @ApiProperty({
-    description: 'Array of paragraphs that make up the learning outcomes',
-    type: [ParagraphContent],
-  })
-  outcomes: ParagraphContent[];
+  // @ApiProperty({
+  //   description: 'Array of paragraphs that make up the learning outcomes',
+  //   type: [ParagraphContent],
+  // })
+  // outcomes: ParagraphContent[];
 
   @ApiProperty()
   sourceHref: string;

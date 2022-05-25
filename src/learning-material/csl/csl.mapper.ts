@@ -34,13 +34,11 @@ export class CSLCourseMapper {
       (await this.getTotalDuration(CSLMaterial)) / 60,
     );
     const descFormatted = this.splitTextBody(CSLMaterial.description);
-    const outcomesFormatted = this.splitTextBody(CSLMaterial.learningOutcomes);
     return {
       source: 'csl',
       id: CSLMaterial.id,
       description: descFormatted,
       shortDescription: CSLMaterial.shortDescription,
-      outcomes: outcomesFormatted,
       title: CSLMaterial.title,
       duration: totalDuration,
       type: await this.getCourseType(CSLMaterial),
