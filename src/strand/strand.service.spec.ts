@@ -2,7 +2,6 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { CSLContentService } from '../learning-material/csl/content-mapping/content.service';
 import { CslService } from '../learning-material/csl/csl.service';
 import { LearningMaterial } from '../learning-material/models/LearningMaterial';
-import { ParagraphContent } from '../learning-material/models/ParagraphContent';
 import { StrandService } from './strand.service';
 
 const generateLearningMaterial = (
@@ -13,7 +12,6 @@ const generateLearningMaterial = (
     description: [],
     duration: 0,
     id: id,
-    outcomes: [],
     source: '',
     sourceHref: '',
     title: title,

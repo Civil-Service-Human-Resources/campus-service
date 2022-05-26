@@ -71,8 +71,6 @@ describe('CSLMapper', () => {
     expect(resp.description[0].content[0]).toEqual('description');
     expect(resp.description[0].label).toEqual('paragraph');
     expect(resp.shortDescription).toEqual('shortDescription');
-    expect(resp.outcomes[0].content[0]).toEqual('learningOutcomes');
-    expect(resp.outcomes[0].label).toEqual('paragraph');
     expect(resp.id).toEqual('TEST01');
     expect(resp.title).toEqual('title');
     expect(resp.source).toEqual('csl');
@@ -81,9 +79,9 @@ describe('CSLMapper', () => {
 
   it('should correctly render a carriage-returned bullet list into a list', async () => {
     const course = loadCourse();
-    course.learningOutcomes = 'paragraph1:\r\n• bullet1\r\n• bullet2';
+    course.description = 'paragraph1:\r\n• bullet1\r\n• bullet2';
     const resp = await mapperUnderTest.mapCourseToLearningMaterial(course);
-    const paragraphContent = resp.outcomes;
+    const paragraphContent = resp.description;
     expect(paragraphContent[0].label).toEqual('paragraph');
     expect(paragraphContent[0].content[0]).toEqual('paragraph1:');
     expect(paragraphContent[1].label).toEqual('bullets');
